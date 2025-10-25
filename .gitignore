@@ -1,0 +1,30 @@
+# WordPress core (do not track)
+wp-admin/
+wp-includes/
+wp-*.php
+xmlrpc.php
+license.txt
+readme.html
+
+# Config & uploads
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+
+# Plugins (track only custom ones!)
+wp-content/plugins/*
+!wp-content/plugins/sanama/
+
+# Themes (track only your theme!)
+wp-content/themes/*
+!wp-content/themes/salnama-theme/
+
+# Local environment files
+.env
+*.local
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
