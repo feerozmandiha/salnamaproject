@@ -1,0 +1,194 @@
+/* ==================================================
+استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
+تمام انیمیشن‌های ساده (چرخش، حرکت فلش، ورود اولیه) با CSS انجام شده‌اند.
+انیمیشن‌های پیچیده (گسترش هدر، منوی تمام‌صفحه) با GSAP مدیریت می‌شوند.
+================================================== */
+
+/* --------------------------------------------------
+پایه‌ها
+-------------------------------------------------- */
+body {
+    transition: padding-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --------------------------------------------------
+انیمیشن‌های فلش — فقط با CSS
+-------------------------------------------------- */
+@keyframes arrow-loop-vertical {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+}
+
+@keyframes arrow-loop-horizontal {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+}
+
+.arrow-path.animate-loop-initial {
+    animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+.arrow-path.animate-loop-hovered {
+    animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+/* --------------------------------------------------
+چرخش آیکون منو — با CSS transition
+-------------------------------------------------- */
+.menu-icon {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-icon.is-rotated-90 {
+    transform: rotate(90deg);
+}
+
+.menu-icon.is-rotated-180 {
+    transform: rotate(180deg);
+}
+
+/* --------------------------------------------------
+ورود اولیه هدر — با CSS animation
+-------------------------------------------------- */
+.minimal-vertical-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 8.33vw;
+    height: auto;
+    min-height: 20vh;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(-150px);
+    animation: header-fade-in 0.8s 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes header-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --------------------------------------------------
+لوگو: پیش‌فرض پنهان، ورود از راست با انیمیشن
+-------------------------------------------------- */
+.logo-container {
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    transform: translateX(20px); /* شروع از راست */
+    transition:
+        opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        visibility 0.4s,
+        transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.logo-container.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* --------------------------------------------------
+دکمه CTA — نمایش با تأخیر
+-------------------------------------------------- */
+.cta-button-wrapper {
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* --------------------------------------------------
+ناحیه آیتم‌های اکشن (اکانت، سبد) — در پایین هدر
+-------------------------------------------------- */
+.action-buttons-container {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--wp--preset--spacing--20);
+}
+
+/* --------------------------------------------------
+اورلی منو
+-------------------------------------------------- */
+.full-screen-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.5s ease;
+}
+
+/* --------------------------------------------------
+ریسپانسیو — موبایل
+-------------------------------------------------- */
+@media (max-width: 1024px) {
+    .minimal-vertical-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        min-height: 60px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .menu-toggle-area {
+        flex-direction: row;
+        width: auto;
+        justify-content: flex-start;
+    }
+
+    .icon-text {
+        writing-mode: horizontal-tb;
+        margin: 0 10px 0 0;
+        order: -1;
+    }
+
+    .logo-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .wp-block-site-title {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .action-buttons-container,
+    .cta-button-wrapper {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .full-screen-menu-overlay {
+        width: 100%;
+    }
+}
