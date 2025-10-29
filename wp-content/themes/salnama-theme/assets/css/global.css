@@ -1,194 +1,196 @@
-/* ==================================================
-استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
-تمام انیمیشن‌های ساده (چرخش، حرکت فلش، ورود اولیه) با CSS انجام شده‌اند.
-انیمیشن‌های پیچیده (گسترش هدر، منوی تمام‌صفحه) با GSAP مدیریت می‌شوند.
-================================================== */
 
-/* --------------------------------------------------
-پایه‌ها
--------------------------------------------------- */
-body {
-    transition: padding-right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        /* ==================================================
+        استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
+        ================================================== */
+        @import "components/_modal-cta.css";
+        /* --------------------------------------------------
+        انیمیشن‌های فلش — فقط با CSS
+        -------------------------------------------------- */
+        @keyframes arrow-loop-vertical {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(20px); }
+        }
 
-/* --------------------------------------------------
-انیمیشن‌های فلش — فقط با CSS
--------------------------------------------------- */
-@keyframes arrow-loop-vertical {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
-}
+        @keyframes arrow-loop-horizontal {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateY(20px); } 
+        }
 
-@keyframes arrow-loop-horizontal {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(8px); }
-}
+        .arrow-path.animate-loop-initial {
+            animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
 
-.arrow-path.animate-loop-initial {
-    animation: arrow-loop-vertical 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
+        .arrow-path.animate-loop-hovered {
+            animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
 
-.arrow-path.animate-loop-hovered {
-    animation: arrow-loop-horizontal 2.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-}
+        /* --------------------------------------------------
+        چرخش آیکون منو — با CSS transition
+        -------------------------------------------------- */
+        .menu-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-/* --------------------------------------------------
-چرخش آیکون منو — با CSS transition
--------------------------------------------------- */
-.menu-icon {
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+        .menu-icon.is-rotated-90 {
+            transform: rotate(90deg);
+        }
 
-.menu-icon.is-rotated-90 {
-    transform: rotate(90deg);
-}
+        .menu-icon.is-rotated-180 {
+            transform: rotate(180deg);
+        }
 
-.menu-icon.is-rotated-180 {
-    transform: rotate(180deg);
-}
+        /* --------------------------------------------------
+        ورود اولیه هدر و استایل‌های عمومی (حالت دسکتاپ پیش‌فرض)
+        -------------------------------------------------- */
+        .minimal-vertical-header {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            width: 8.33vw;
+            height: 22vh; 
+            z-index: 1000;
+            display: flex;
+            flex-direction: column; 
+            flex-wrap: nowrap;
+            align-items: center;
+            box-sizing: border-box;
+            
+            /* حالت پیش فرض با بلور (برای دسکتاپ) */
+            backdrop-filter: blur(4px);
+            background-color: rgb(0 0 0 / 9%);
+            transition: height 0.4s ease, backdrop-filter 0.4s ease, background-color 0.4s ease, transform 0.3s ease-in-out;
+            
+            opacity: 0;
+            transform: translateY(-150px);
+            animation: header-fade-in 5s 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            padding: 1rem 0; 
+            border-radius: 12px;
+        }
 
-/* --------------------------------------------------
-ورود اولیه هدر — با CSS animation
--------------------------------------------------- */
-.minimal-vertical-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 8.33vw;
-    height: auto;
-    min-height: 20vh;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-    box-sizing: border-box;
-    opacity: 0;
-    transform: translateY(-150px);
-    animation: header-fade-in 0.8s 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
+        /* حالت هاور یا باز شده (منو فعال) در دسکتاپ - حذف بلور و تغییر رنگ پس زمینه */
+        /* این استایل فقط در دسکتاپ اعمال می شود و در موبایل override می شود */
+        .minimal-vertical-header:hover,
+        .minimal-vertical-header.is-expanded-menu { 
+            backdrop-filter: none;
+            background-color: var(--wp--preset--color--surface);
+            color: #1a1a1a;
+        }
 
-@keyframes header-fade-in {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        @keyframes header-fade-in {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-/* --------------------------------------------------
-لوگو: پیش‌فرض پنهان، ورود از راست با انیمیشن
--------------------------------------------------- */
-.logo-container {
-    opacity: 0;
-    visibility: hidden;
-    text-align: center;
-    transform: translateX(20px); /* شروع از راست */
-    transition:
-        opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-        visibility 0.4s,
-        transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .svg-menu-icon {
+            width: 4rem;
+            height: 4rem;
+        }
 
-.logo-container.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
-}
+        .logo-container {
+            width: 60%;
+        }
 
-/* --------------------------------------------------
-دکمه CTA — نمایش با تأخیر
--------------------------------------------------- */
-.cta-button-wrapper {
-    opacity: 0;
-    visibility: hidden;
-    text-align: center;
-    transition: opacity 0.3s, visibility 0.3s;
-}
+        /* --------------------------------------------------
+        ناحیه آیتم‌های اکشن (اکانت، سبد، CTA)
+        -------------------------------------------------- */
+        .action-buttons-container {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            background: transparent;
+            width: 100%; 
+        }
 
-/* --------------------------------------------------
-ناحیه آیتم‌های اکشن (اکانت، سبد) — در پایین هدر
--------------------------------------------------- */
-.action-buttons-container {
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--wp--preset--spacing--20);
-}
+        /* --------------------------------------------------
+        اورلی منو
+        -------------------------------------------------- */
+        .full-screen-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(52, 57, 57, 0.95);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: #ffffff;
+        }
+        
+        /* --------------------------------------------------
+        ریسپانسیو (موبایل و تبلت)
+        -------------------------------------------------- */
+        @media (max-width: 1024px) {
+            .minimal-vertical-header {
+                right: 1rem; 
+                width: calc(100% - 2rem); 
+                height: 16vh; 
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1.5rem; 
+                animation: none;
+                opacity: 1;
+                transform: none;
+                
+                /* در موبایل، حالت بلور و رنگ تیره باید ثابت بماند */
+                backdrop-filter: blur(4px) !important;
+                background-color: rgb(0 0 0 / 9%) !important; 
+            }
+            
+            /* در موبایل، کلاس is-expanded-menu هیچ تغییری در پس‌زمینه اعمال نمی‌کند (هدف: ثابت ماندن) */
+            .minimal-vertical-header.is-expanded-menu {
+                backdrop-filter: none !important; 
+                background-color: var(--wp--preset--color--surface) !important;
+                color: #1a1a1a;
+            }
 
-/* --------------------------------------------------
-اورلی منو
--------------------------------------------------- */
-.full-screen-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.95);
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: opacity 0.5s ease;
-}
+            .menu-toggle-area {
+                flex-direction: row;
+                width: auto; 
+                justify-content: flex-start;
+                cursor: pointer;
+            }
 
-/* --------------------------------------------------
-ریسپانسیو — موبایل
--------------------------------------------------- */
-@media (max-width: 1024px) {
-    .minimal-vertical-header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        min-height: 60px;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
-        animation: none;
-        opacity: 1;
-        transform: none;
-    }
+            .icon-text {
+                writing-mode: horizontal-tb;
+                margin: 0 10px 0 0;
+                order: -1;
+            }
 
-    .menu-toggle-area {
-        flex-direction: row;
-        width: auto;
-        justify-content: flex-start;
-    }
+            .logo-container {
+                opacity: 1 !important;
+                visibility: visible !important; 
+                width: auto;
+                position: static;
+                transform: none !important;
+                padding: 0;
+            }
+            
+            .wp-block-site-title {
+                display: none;
+            }
 
-    .icon-text {
-        writing-mode: horizontal-tb;
-        margin: 0 10px 0 0;
-        order: -1;
-    }
+            .action-buttons-container {
+                /* flex-direction: row; */
+                margin-top: 0;
+                /* align-items: flex-start;
+                align-content: flex-end; */
+            }
 
-    .logo-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .wp-block-site-title {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    .action-buttons-container,
-    .cta-button-wrapper {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    .full-screen-menu-overlay {
-        width: 100%;
-    }
-}
+            .cta-button-wrapper {
+                opacity: 1 !important;
+                visibility: visible !important; 
+                text-align: center;
+                padding: 0;
+                margin-left: 1rem;
+            }
+        }

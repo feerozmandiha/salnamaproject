@@ -1,8 +1,13 @@
+// assets/js/modules/Header.js
+
 import { isDesktop } from '../core/utils.js';
 
 /**
- * کلاس مدیریت هدر عمودی — فقط برای تعاملات پیچیده (گسترش، منوی تمام‌صفحه)
- * انیمیشن‌های ساده (فلش، چرخش، ورود اولیه) با CSS انجام شده‌اند.
+ * کلاس مدیریت هدر عمودی
+ * این نسخه:
+ * ۱. منطق منوی تمام‌صفحه (Overlay) را با جلوه اسلاید از راست به چپ در دسکتاپ به‌روزرسانی می‌کند.
+ * ۲. اطمینان حاصل می کند که ارتفاع هدر در حالت موبایل (به هنگام باز شدن منو) ثابت باقی بماند.
+ * ۳. مطمئن می شود که فیلتر بلور در دسکتاپ پس از بسته شدن منو بازگردانده شود.
  */
 export class Header {
     constructor() {
@@ -15,23 +20,35 @@ export class Header {
         this.logoContainer = this.header.querySelector('.logo-container');
         this.ctaButton = this.header.querySelector('.cta-button-wrapper');
         this.arrowPath = this.header.querySelector('.arrow-path');
+        
+        if (!this.toggleArea || !this.overlay) return; 
 
         this.isMenuOpen = false;
         this.lastScrollTop = 0;
 
-        // تنظیم اولیه موقعیت لوگو و CTA برای انیمیشن ورود از راست
+        // تنظیم اولیه:
+        // ۱. لوگو و CTA برای انیمیشن ورود از راست
         gsap.set([this.logoContainer, this.ctaButton], { x: 30, autoAlpha: 0 });
+        
+        // ۲. اورلی برای اسلاید از راست: ابتدا آن را به بیرون صفحه (سمت راست) منتقل می‌کنیم.
+        gsap.set(this.overlay, { 
+            x: window.innerWidth, 
+            opacity: 0, 
+            pointerEvents: 'none', 
+            width: '100%' 
+        });
 
         this.init();
+    }
+
+    remToPx(rem) {
+        return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
     }
 
     get fullHeight() {
         return window.innerHeight;
     }
 
-    get verticalHeaderWidth() {
-        return window.innerWidth * 0.0833;
-    }
 
     init() {
         this.initHoverEvents();
@@ -55,50 +72,44 @@ export class Header {
         this.toggleArea.addEventListener('mouseenter', () => {
             if (this.isMenuOpen) return;
 
-            // 1. گسترش هدر با ease نرم
+            // ۱. گسترش هدر (Duration 1.5s)
             gsap.to(this.header, { 
-                height: this.fullHeight, 
-                duration: 0.6, 
-                ease: 'power1.out' // تغییر به power1.out برای نرمی و یکنواختی بیشتر
+                height: this.fullHeight - this.remToPx(2), 
+                duration: 1.5, 
+                ease: 'power2.out' 
             });
 
-            // 2. ورود نرم لوگو و CTA از راست
-            gsap.to([this.logoContainer, this.ctaButton], {
-                autoAlpha: 1, // opacity و visibility را مدیریت می‌کند
-                x: 0, // حرکت به موقعیت نهایی
-                duration: 0.5, // افزایش مدت زمان برای حس ملایم‌تر
-                delay: 0.2, // اندکی تأخیر برای اینکه گسترش هدر دیده شود
-                ease: 'power1.out' // تغییر به power1.out برای حرکت ملایم
-            });
+            // ۲. ورود نرم لوگو و CTA
+            const tl = gsap.timeline();
+            tl.to(this.ctaButton, { autoAlpha: 1, x: 0, duration: 1, ease: 'circ.out' });
+            tl.to(this.logoContainer, { autoAlpha: 1, x: 0, duration: 1, ease: 'circ.out' }, "<0.5");
 
-            // چرخش آیکون — با CSS class
+            // چرخش آیکون 
             this.menuIcon.classList.add('is-rotated-90');
             this.menuIcon.classList.remove('is-rotated-180');
-
             this.setArrowLoop('hovered');
-            this.shiftBodyContent(true);
         });
 
         this.header.addEventListener('mouseleave', () => {
             if (this.isMenuOpen || !isDesktop()) return;
 
-            // 1. خروج لوگو و CTA (انیمیشن خروج)
-            gsap.to([this.logoContainer, this.ctaButton], { 
-                autoAlpha: 0, 
-                x: 30, // بازگشت به موقعیت شروع از راست
-                duration: 0.2 
-            });
+            // ۱. خروج لوگو و CTA
+            const targets = [];
+            if (this.logoContainer) targets.push(this.logoContainer);
+            if (this.ctaButton) targets.push(this.ctaButton);
+            if (targets.length > 0) {
+                gsap.to(targets, { autoAlpha: 0, x: 30, duration: 0.3, ease: 'power2.in' });
+            }
 
-            // 2. جمع شدن هدر
+            // ۲. جمع شدن هدر (22vh Duration 1.5s)
             gsap.to(this.header, { 
-                height: '20vh', 
-                duration: 0.5, 
+                height: '22vh', 
+                duration: 1.5, 
                 ease: 'power2.inOut' 
             });
 
             this.menuIcon.classList.remove('is-rotated-90', 'is-rotated-180');
             this.setArrowLoop('initial');
-            this.shiftBodyContent(false);
         });
     }
 
@@ -121,55 +132,61 @@ export class Header {
         this.isMenuOpen = !this.isMenuOpen;
 
         if (this.isMenuOpen) {
+            // ۱. اعمال استایل پس زمینه و چرخش آیکون (برای دسکتاپ: حذف بلور)
+            this.header.classList.add('is-expanded-menu'); 
             this.arrowPath?.classList.remove('animate-loop-initial', 'animate-loop-hovered');
-            
-            // 1. مدیریت هدر در دسکتاپ
+            this.menuIcon.classList.remove('is-rotated-90');
+            this.menuIcon.classList.add('is-rotated-180');
+
+            // ۲. مدیریت هدر (فقط در دسکتاپ: ارتفاع کامل)
             if (isDesktop()) {
-                gsap.to(this.header, { height: this.fullHeight, duration: 0.4, ease: 'power2.inOut' });
-                this.shiftBodyContent(true);
-                // لوگو و CTA در اینجا نیاز به تنظیم دارند چون منو را باز می کنیم
-                gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 1, x: 0 }); 
+                const targetHeight = this.fullHeight - this.remToPx(2);
+                gsap.to(this.header, { height: targetHeight, duration: 0.4, ease: 'power2.inOut' });
+            }
+            // توجه: در موبایل، هدر ارتفاع ثابت (16vh) خود را حفظ می کند.
+
+            // ۳. نمایش لوگو/CTA (فقط در دسکتاپ)
+            if (isDesktop()) {
+                gsap.to([this.logoContainer, this.ctaButton], { autoAlpha: 1, x: 0, duration: 0.4, ease: 'circ.out' });
             }
 
-            // 2. باز کردن اورلی منو
+            // ۴. باز کردن اورلی منو با اسلاید از راست به چپ
             gsap.to(this.overlay, {
                 opacity: 1,
                 pointerEvents: 'all',
-                width: isDesktop() ? `calc(100% - ${this.verticalHeaderWidth}px)` : '100%',
+                x: 0, 
                 duration: 0.5,
                 ease: 'expo.out'
             });
 
-            // چرخش به 180 درجه — با CSS
-            this.menuIcon.classList.remove('is-rotated-90');
-            this.menuIcon.classList.add('is-rotated-180');
-
         } else {
-            // 1. مدیریت هدر در دسکتاپ
-            if (isDesktop()) {
-                gsap.to(this.header, { height: '20vh', duration: 0.4, ease: 'power2.inOut' });
-                this.shiftBodyContent(false);
-                // لوگو و CTA دوباره پنهان شوند
-                gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 0, x: 30 }); 
-            }
+            // ۱. حذف کلاس استایل پس زمینه و چرخش آیکون (برای دسکتاپ: اعمال بلور مجدد)
+            this.header.classList.remove('is-expanded-menu');
+            this.menuIcon.classList.remove('is-rotated-90', 'is-rotated-180');
 
-            // 2. بستن اورلی منو
+            // ۲. جمع شدن هدر (فقط در دسکتاپ: به 22vh)
+            if (isDesktop()) {
+                gsap.to(this.header, { height: '22vh', duration: 0.4, ease: 'power2.inOut' });
+            }
+            
+            // ۳. پنهان کردن لوگو/CTA (فقط در دسکتاپ)
+            if (isDesktop()) {
+                gsap.to([this.logoContainer, this.ctaButton], { autoAlpha: 0, x: 30, duration: 0.3, ease: 'power2.in' });
+            }
+            
+            // ۴. بستن اورلی منو با اسلاید به راست و خروج از دید
             gsap.to(this.overlay, {
                 opacity: 0,
                 pointerEvents: 'none',
+                x: window.innerWidth, // حرکت به بیرون صفحه (سمت راست)
                 width: '100%',
-                duration: 0.3
+                duration: 0.5,
+                ease: 'power2.in'
             });
 
-            this.menuIcon.classList.remove('is-rotated-90', 'is-rotated-180');
+            // ۵. چرخش و لوپ
             this.setArrowLoop('initial');
         }
-    }
-
-    shiftBodyContent(shouldShift) {
-        if (!isDesktop()) return;
-        const paddingRight = shouldShift ? this.verticalHeaderWidth : 0;
-        gsap.to('body', { paddingRight, duration: 0.4, ease: 'power2.inOut' });
     }
 
     /**
@@ -177,14 +194,14 @@ export class Header {
      */
     handleScroll() {
         // این منطق فقط برای حالت موبایل و زمانی که منو بسته است اجرا می‌شود
-        if (isDesktop() || this.isMenuOpen) return; 
+        if (isDesktop() || this.isMenuOpen || !this.header) return; 
         
         const st = window.pageYOffset || document.documentElement.scrollTop;
         const headerHeight = this.header.offsetHeight;
 
         if (st > this.lastScrollTop && st > headerHeight) {
             // اسکرول به سمت پایین: مخفی کردن هدر
-            gsap.to(this.header, { y: -headerHeight, duration: 0.3, ease: 'power2.in' });
+            gsap.to(this.header, { y: -headerHeight- this.remToPx(2), duration: 0.3, ease: 'power2.in' });
         } else if (st < this.lastScrollTop) {
             // اسکرول به سمت بالا: نمایش هدر
              gsap.to(this.header, { y: 0, duration: 0.3, ease: 'power2.out' });
@@ -197,27 +214,40 @@ export class Header {
     handleResize() {
         if (isDesktop()) {
             if (!this.isMenuOpen) {
-                gsap.set(this.header, { height: '20vh', y: 0 });
-                // مطمئن می‌شویم که لوگو/CTA در دسکتاپ بسته، مخفی هستند
+                // حالت دسکتاپ بسته
+                gsap.set(this.header, { height: '22vh', y: 0 });
+                this.header.classList.remove('is-expanded-menu'); 
                 gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 0, x: 30 });
                 this.setArrowLoop('initial');
+                // اورلی را به بیرون صفحه بفرست
+                gsap.set(this.overlay, { x: window.innerWidth, opacity: 0, pointerEvents: 'none', width: '100%' }); 
             } else {
-                 // اگر منو باز است، ارتفاع را روی fullHeight تنظیم کن
-                gsap.set(this.header, { height: this.fullHeight, y: 0 });
+                // حالت دسکتاپ باز
+                gsap.set(this.header, { height: this.fullHeight - this.remToPx(2), y: 0 });
+                this.header.classList.add('is-expanded-menu'); 
                 gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 1, x: 0 });
+                
+                // اورلی را در موقعیت نهایی با عرض تنظیم شده قرار بده
+                gsap.set(this.overlay, { 
+                    x: 0, 
+                    opacity: 1, 
+                    pointerEvents: 'all',
+                });
             }
-            this.shiftBodyContent(this.isMenuOpen || this.header.matches(':hover'));
         } else {
             // حالت موبایل
-            gsap.set(this.header, { height: 'auto', y: 0 });
-            
-            // در اینجا فقط برای تمیزکاری انیمیشن دسکتاپ را ریست می‌کنیم:
-            gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 1, x: 0 });
+            gsap.set(this.header, { height: '16vh', y: 0 }); 
+            this.header.classList.remove('is-expanded-menu'); // در موبایل این کلاس فقط برای ریست استایل استفاده می شود
+            gsap.set([this.logoContainer, this.ctaButton], { autoAlpha: 1, x: 0 }); // در موبایل همیشه باید قابل مشاهده باشند
             
             if (!this.isMenuOpen) {
                 this.setArrowLoop('initial');
+                // اورلی را به بیرون صفحه بفرست
+                gsap.set(this.overlay, { x: window.innerWidth, opacity: 0, pointerEvents: 'none', width: '100%' }); 
+            } else {
+                // اورلی را در موقعیت نهایی قرار بده
+                gsap.set(this.overlay, { x: 0, opacity: 1, pointerEvents: 'all', width: '100%' });
             }
-            this.shiftBodyContent(false);
         }
     }
 }

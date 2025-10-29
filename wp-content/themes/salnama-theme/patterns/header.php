@@ -1,5 +1,12 @@
 <?php
 /**
+ * Title: header
+ * Slug: salnama-theme/header
+ * Inserter: no
+ */
+?>
+<?php
+/**
  * Title: هدر عمودی مینیمال (Vertical Minimal Header)
  * Slug: salnama/header-vertical-minimal
  * Categories: salnama-header
@@ -8,20 +15,12 @@
  * Viewport Width: 1280
  */
 
-$hidden_modal_content = '
-<!-- wp:html -->
-<div data-modal-content="exclusive-consultation" style="display:none;">
-  <h3 class="has-text-align-center">مشاوره اختصاصی</h3>
-  <p>طراحی هدیه‌ای که نام برند شما را در خاطره‌ها زنده نگه دارد.</p>
-  <p><a href="/contact">تماس فوری</a> یا فرم زیر را پر کنید.</p>
-</div>
-<!-- /wp:html -->
-';
 return [
 	'title'       => esc_html__( 'هدر عمودی مینیمال', 'salnama-theme' ),
 	'description' => esc_html__( 'یک هدر عمودی چسبان (Sticky) با قابلیت باز شدن و نمایش منوی تمام صفحه.', 'salnama-theme' ),
 	'categories'  => [ 'salnama-header' ],
 	'content'     => '
+
 <!-- wp:group {"tagName":"header","align":"full","className":"minimal-vertical-header fixed top-0 right-0 h-full w-[8.33%] z-[100] p-6 lg:p-12 transition-all duration-300 ease-in-out is-minimal-header","style":{"spacing":{"padding":{"top":"var:preset|spacing|20","bottom":"0","left":"0","right":"0"},"blockGap":"0"},"border":{"radius":{"topLeft":"8px","topRight":"8px","bottomLeft":"8px","bottomRight":"8px"}},"shadow":"var:preset|shadow|hard","elements":{"link":{"color":{"text":"var:preset|color|background"}}}},"textColor":"background","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"space-between"}} -->
 <header class="wp-block-group alignfull minimal-vertical-header fixed top-0 right-0 h-full w-[8.33%] z-[100] p-6 lg:p-12 transition-all duration-300 ease-in-out is-minimal-header has-background-color has-text-color has-link-color" style="border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;padding-top:var(--wp--preset--spacing--20);padding-right:0;padding-bottom:0;padding-left:0;box-shadow:var(--wp--preset--shadow--hard)"><!-- wp:group {"style":{"shadow":"var:preset|shadow|none","spacing":{"padding":{"left":"0","right":"0","top":"0","bottom":"0"},"margin":{"top":"0","bottom":"0"},"blockGap":"0"}},"backgroundColor":"transparent","layout":{"type":"constrained","justifyContent":"right"}} -->
 <div class="wp-block-group has-transparent-background-color has-background" style="margin-top:0;margin-bottom:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0;box-shadow:var(--wp--preset--shadow--none)"><!-- wp:group {"className":"p-2 menu-toggle-area cursor-pointer","style":{"spacing":{"padding":{"top":"0","bottom":"0","left":"0","right":"var:preset|spacing|20"},"margin":{"top":"0","bottom":"0"},"blockGap":"0"},"shadow":"var:preset|shadow|none","layout":{"selfStretch":"fit","flexSize":null}},"backgroundColor":"transparent","layout":{"type":"flex","flexWrap":"nowrap"}} -->
@@ -78,20 +77,12 @@ return [
 <!-- /wp:group -->
 
 <!-- wp:buttons {"className":"cta-button-wrapper","layout":{"type":"flex","orientation":"vertical","justifyContent":"center"}} -->
-<div class="wp-block-buttons cta-button-wrapper">
-  <!-- wp:button {"textColor":"background","backgroundColor":"primary","className":"is-style-fill"} -->
-  <div class="wp-block-button is-style-fill">
-    <a 
-      class="wp-block-button__link has-background-color has-primary-background-color wp-element-button" 
-      href="#" 
-      data-modal-trigger="exclusive-consultation"
-    >
+<div class="wp-block-buttons cta-button-wrapper"><!-- wp:button {"className":"is-style-fill","style":{"spacing":{"padding":{"left":"var:preset|spacing|20","right":"var:preset|spacing|20","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}}}} -->
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link wp-element-button" href="#" style="padding-top:var(--wp--preset--spacing--20);padding-right:var(--wp--preset--spacing--20);padding-bottom:var(--wp--preset--spacing--20);padding-left:var(--wp--preset--spacing--20)">
       دریافت مشاوره اختصاصی
-    </a>
-  </div>
-  <!-- /wp:button -->
-</div>
-<!-- /wp:buttons -->
+    </a></div>
+<!-- /wp:button --></div>
+<!-- /wp:buttons --></div>
 <!-- /wp:group --></header>
 <!-- /wp:group -->
 
@@ -103,6 +94,6 @@ return [
 <!-- wp:group {"className":"full-screen-menu-overlay fixed top-0 left-0 h-full w-full z-[90] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out bg-surface/95","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"center"}} -->
 <div class="wp-block-group full-screen-menu-overlay fixed top-0 left-0 h-full w-full z-[90] opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out bg-surface/95"><!-- wp:navigation {"ref":14,"metadata":{"ignoredHookedBlocks":["woocommerce/customer-account"]},"className":"menu-content space-y-4","layout":{"type":"flex","orientation":"vertical","justifyContent":"center","verticalAlignment":"center","className":"text-4xl lg:text-5xl"}} /--></div>
 <!-- /wp:group -->
+
 ',
-$hidden_modal_content,
 ];

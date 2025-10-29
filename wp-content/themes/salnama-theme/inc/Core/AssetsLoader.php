@@ -14,6 +14,8 @@ class AssetsLoader {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
         add_filter( 'script_loader_tag', [ $this, 'add_module_type_to_app_js' ], 10, 3 );
+        add_filter( 'script_loader_tag', [ $this, 'add_module_type_to_cta_modal' ], 10, 3 ); // ← جدید
+
     }
 
     /**
@@ -65,6 +67,15 @@ class AssetsLoader {
             SALNAMA_THEME_VERSION, 
             true
         );
+
+        // مودال CTA
+        wp_enqueue_script(
+            'salnama-cta-modal',
+            SALNAMA_ASSETS_URI . '/js/modules/CtaModal.js',
+            ['gsap-core'],
+            SALNAMA_THEME_VERSION,
+            true
+        );
     }
 
     /**
@@ -72,6 +83,13 @@ class AssetsLoader {
      */
     public function add_module_type_to_app_js( $tag, $handle, $src ) {
         if ( 'salnama-theme-app-js' === $handle ) {
+            return '<script type="module" src="' . esc_url( $src ) . '"></script>';
+        }
+        return $tag;
+    }
+
+    public function add_module_type_to_cta_modal( $tag, $handle, $src ) {
+        if ( 'salnama-cta-modal' === $handle ) {
             return '<script type="module" src="' . esc_url( $src ) . '"></script>';
         }
         return $tag;

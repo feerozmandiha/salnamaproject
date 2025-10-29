@@ -1,0 +1,60 @@
+/* ==================================================
+مودال CTA — سبک مینیمال، لوکس و بدون تداخل با هدر
+================================================== */
+
+.salnama-cta-modal {
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.salnama-cta-modal.is-open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+.modal-overlay {
+    height: 100%;
+}
+.modal-content-wrapper {
+    width: 92%;
+    position: relative;
+    transform: translateY(30px);
+    transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.salnama-cta-modal.is-open .modal-content-wrapper {
+    transform: translateY(0);
+}
+
+.modal-close {
+    position: absolute;
+    left: 1.25rem;
+    top: 1.25rem;
+    border: none;
+    font-size: 1.75rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+/* ریسپانسیو */
+@media (max-width: 600px) {
+    .modal-content-wrapper {
+        padding: 1.75rem;
+        margin: 1rem;
+    }
+}

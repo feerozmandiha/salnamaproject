@@ -51,6 +51,11 @@
 					"color": "#FF6B6B",
 					"name": "Accent/Sale",
 					"slug": "accent"
+				},
+				{
+					"color": "transparent",
+					"name": "Transparent",
+					"slug": "transparent"
 				}
 			]
 		},
@@ -184,6 +189,16 @@
 	},
 	"styles": {
 		"blocks": {
+			"core/button": {
+				"spacing": {
+					"padding": {
+						"bottom": "var(--wp--preset--spacing--20)",
+						"left": "var(--wp--preset--spacing--20)",
+						"right": "var(--wp--preset--spacing--20)",
+						"top": "var(--wp--preset--spacing--20)"
+					}
+				}
+			},
 			"core/cover": {
 				"color": {
 					"background": "var(--wp--preset--color--surface)"
@@ -270,6 +285,10 @@
 		{
 			"area": "footer",
 			"name": "footer"
+		},
+		{
+			"area": "cta-modal",
+			"name": "cta-modal"
 		}
 	],
 	"version": 3,

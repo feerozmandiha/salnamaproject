@@ -12,6 +12,8 @@ class ThemeSetup {
         add_action( 'init', [ $this, 'register_nav_menus' ] );
         add_filter( 'upload_mimes', [ $this, 'allow_svg_uploads' ] );
         add_action( 'admin_head', [ $this, 'fix_svg_display' ] );
+        add_filter('wp_kses_allowed_html', [ $this, 'data_modal_trigger' ]  , 10, 2 );
+
 
         // غیرفعال کردن Layout Styles داینامیک برای Group Block (جلوگیری از کلاس‌های .wp-container-...)
         add_filter( 'block_core_group_render_layout_support', '__return_false' );
@@ -78,5 +80,14 @@ class ThemeSetup {
                 height: auto !important;
             }
         </style>';
+    }
+
+    // اجازه استفاده از data attributes در بلوک‌ها
+    public function data_modal_trigger($tags, $context) {
+        if ($context === 'post') {
+            $tags['a']['data-modal-trigger'] = true;
+            $tags['button']['data-modal-trigger'] = true;
+        }
+        return $tags;
     }
 }
