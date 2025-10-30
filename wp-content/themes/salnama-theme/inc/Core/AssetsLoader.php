@@ -13,9 +13,7 @@ class AssetsLoader {
     public function run() {
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
-        add_filter( 'script_loader_tag', [ $this, 'add_module_type_to_scripts' ], 10, 3 );
-        add_filter( 'script_loader_tag', [ $this, 'add_module_type_to_cta_modal' ], 10, 3 ); // ← جدید
-
+        add_filter( 'script_loader_tag', [ $this, 'add_module_type_to_app_js' ], 10, 3 );
     }
 
     /**
@@ -34,14 +32,6 @@ class AssetsLoader {
             SALNAMA_ASSETS_URI . '/css/global.css', 
             ['salnama-theme-tailwind'], 
             SALNAMA_THEME_VERSION 
-        );
-
-            // استایل‌های مخصوص بلوک‌ها
-        wp_enqueue_style(
-            'salnama-block-styles',
-            SALNAMA_ASSETS_URI . '/css/blocks/modal-blocks.css',
-            ['salnama-theme-global-css'],
-            SALNAMA_THEME_VERSION
         );
     }
 
@@ -67,53 +57,21 @@ class AssetsLoader {
             true
         );
 
-            // ماژول‌های مودال
-        $modal_scripts = [
-            'salnama-gsap-manager' => '/js/core/GSAPManager.js',
-            'salnama-modal-manager' => '/js/modules/ModalManager.js',
-            'salnama-base-modal' => '/js/modules/BaseModal.js',
-            'salnama-consultation-modal' => '/js/modules/ConsultationModal.js',
-            'salnama-special-order-modal' => '/js/modules/SpecialOrderModal.js',
-            'salnama-app' => '/js/core/App.js'
-        ];
-
-        foreach ($modal_scripts as $handle => $path) {
-            wp_enqueue_script(
-                $handle,
-                SALNAMA_ASSETS_URI . $path,
-                ['gsap-scrolltrigger'],
-                SALNAMA_THEME_VERSION,
-                true
-            );
-        }
-
-
+        // اسکریپت اصلی برنامه (به صورت ماژول)
+        wp_enqueue_script(
+            'salnama-theme-app-js',
+            SALNAMA_ASSETS_URI . '/js/core/App.js', 
+            ['gsap-scrolltrigger'], 
+            SALNAMA_THEME_VERSION, 
+            true
+        );
     }
 
     /**
      * افزودن type="module" به اسکریپت اصلی
      */
-    // در متد add_module_type_to_app_js
-    public function add_module_type_to_scripts($tag, $handle, $src) {
-        $module_handles = [
-            'salnama-gsap-manager',
-            'salnama-modal-manager', 
-            'salnama-base-modal',
-            'salnama-consultation-modal',
-            'salnama-special-order-modal',
-            'salnama-catalog-modal',
-            'salnama-app'
-        ];
-
-        if (in_array($handle, $module_handles)) {
-            return '<script type="module" src="' . esc_url($src) . '"></script>';
-        }
-        
-        return $tag;
-    }
-
-    public function add_module_type_to_cta_modal( $tag, $handle, $src ) {
-        if ( 'salnama-cta-modal' === $handle ) {
+    public function add_module_type_to_app_js( $tag, $handle, $src ) {
+        if ( 'salnama-theme-app-js' === $handle ) {
             return '<script type="module" src="' . esc_url( $src ) . '"></script>';
         }
         return $tag;

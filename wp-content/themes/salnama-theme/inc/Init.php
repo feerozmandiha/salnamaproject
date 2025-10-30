@@ -4,8 +4,7 @@ namespace Salnama_Theme;
 use Salnama_Theme\Core\ThemeSetup;
 use Salnama_Theme\Core\AssetsLoader;
 use Salnama_Theme\Core\BlockPattern;
-use Salnama_Theme\Core\ModalManager;
-use Salnama_Theme\Modals\BaseModal;
+
 use Salnama_Theme\WooCommerce\WooCommerceSetup; // کلاس آینده
 
 /**
@@ -23,9 +22,6 @@ class Init {
         return [
             ThemeSetup::class,
             AssetsLoader::class,
-            BlockPattern::class,
-            ModalManager::class,
-            // BaseModal::class,
             // WooCommerceSetup::class, // ثبت کلاس‌های WooCommerce برای مدیریت تنظیمات فروشگاه
         ];
     }

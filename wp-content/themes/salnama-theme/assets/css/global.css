@@ -2,7 +2,6 @@
         /* ==================================================
         استایل‌های جهانی و کمکی برای هدر عمودی مینیمال
         ================================================== */
-        @import "components/_modal-cta.css";
         /* --------------------------------------------------
         انیمیشن‌های فلش — فقط با CSS
         -------------------------------------------------- */
@@ -92,6 +91,14 @@
             width: 60%;
         }
 
+        
+            .cta-button-wrapper {
+                opacity: 0 ;
+                visibility: hidden; 
+                text-align: center;
+                padding: 0;
+                margin-left: 1rem;
+            }
         /* --------------------------------------------------
         ناحیه آیتم‌های اکشن (اکانت، سبد، CTA)
         -------------------------------------------------- */
@@ -133,10 +140,11 @@
                 right: 1rem; 
                 width: calc(100% - 2rem); 
                 height: 16vh; 
-                flex-direction: row;
+                flex-direction: row !important;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0 1.5rem; 
+
+                padding: 0 1.5rem !important; 
                 animation: none;
                 opacity: 1;
                 transform: none;
@@ -153,44 +161,85 @@
                 color: #1a1a1a;
             }
 
-            .menu-toggle-area {
-                flex-direction: row;
-                width: auto; 
-                justify-content: flex-start;
-                cursor: pointer;
-            }
-
-            .icon-text {
-                writing-mode: horizontal-tb;
-                margin: 0 10px 0 0;
-                order: -1;
-            }
-
-            .logo-container {
+            /* حالت موبایل */
+            .minimal-vertical-header > .logo-container {
+                position: static !important;
                 opacity: 1 !important;
-                visibility: visible !important; 
-                width: auto;
-                position: static;
+                visibility: visible !important;
                 transform: none !important;
-                padding: 0;
+                width: auto !important;
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: auto !important;
+                min-height: auto !important;
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                bottom: auto !important;
             }
-            
+
+            /* ریست کامل برای لوگو */
+            .minimal-vertical-header > .logo-container .salnama-logo,
+            .minimal-vertical-header > .logo-container .wp-block-site-logo,
+            .minimal-vertical-header > .logo-container .custom-logo-link {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                position: static !important;
+                transform: none !important;
+                width: auto !important;
+                height: auto !important;
+            }
+
+            .minimal-vertical-header > .logo-container .custom-logo {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-height: 50px !important;
+                width: auto !important;
+                height: auto !important;
+                min-width: 80px !important;
+            }
+
+            /* عنوان سایت */
+            .minimal-vertical-header > .logo-container .wp-block-site-title {
+                display: block !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                font-size: 14px !important;
+                margin-top: 5px !important;
+                text-align: center !important;
+                white-space: nowrap;
+            }
+
+              /* div سوم - دکمه‌ها در سمت چپ */
+            .minimal-vertical-header > .action-buttons-container {
+                margin-right: auto;
+                margin-top: 0 !important;
+                width: auto !important;
+                display: none;
+            }
+              /* استایل‌های اضافی برای نمایش صحیح */
+            .minimal-vertical-header .menu-toggle-area {
+                padding-right: 0 !important;
+            }
+
+            .minimal-vertical-header .action-icons {
+                flex-direction: row !important;
+                gap: 1rem;
+            }
+
+            .minimal-vertical-header .cta-button-wrapper {
+                padding: 0.5rem !important;
+            }
+
+            .minimal-vertical-header .salnama-logo img {
+                max-height: 40px;
+                width: auto;
+            }
             .wp-block-site-title {
                 display: none;
             }
-
-            .action-buttons-container {
-                /* flex-direction: row; */
-                margin-top: 0;
-                /* align-items: flex-start;
-                align-content: flex-end; */
-            }
-
-            .cta-button-wrapper {
-                opacity: 1 !important;
-                visibility: visible !important; 
-                text-align: center;
-                padding: 0;
-                margin-left: 1rem;
-            }
-        }
+}
