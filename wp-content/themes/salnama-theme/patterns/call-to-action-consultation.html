@@ -1,0 +1,67 @@
+<!-- wp:group {"tagName":"section","metadata":{"name":"Modal Consultation"},"className":"modal-wrapper hidden","layout":{"type":"default"},"data":{"modalId":"consultation"}} -->
+<section id="consultation-modal" class="wp-block-group modal-wrapper hidden" data-modal-id="consultation">
+    
+    <!-- Overlay با Block Style -->
+    <!-- wp:group {"className":"modal-overlay","layout":{"type":"default"},"style":{"spacing":{"blockGap":"0"}}} -->
+    <div class="wp-block-group modal-overlay">
+        <!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","orientation":"vertical","verticalAlignment":"center"}} -->
+        <div class="wp-block-group">
+            
+            <!-- Modal Content با Block Style -->
+            <!-- wp:group {"className":"modal-content bg-white rounded-xl","layout":{"type":"constrained","contentSize":"480px"}} -->
+            <div class="wp-block-group modal-content bg-white rounded-xl">
+                
+                <!-- Close Button -->
+                <!-- wp:buttons {"layout":{"type":"flex"}} -->
+                <div class="wp-block-buttons">
+                    <!-- wp:button {"className":"modal-close is-style-outline","style":{"border":{"radius":"50%","width":"0px"},"spacing":{"padding":{"top":"8px","bottom":"8px","left":"8px","right":"8px"}},"elements":{"link":{"color":{"text":"#6b7280"}}}},"data":{"modalClose":true}} -->
+                    <div class="wp-block-button modal-close is-style-outline">
+                        <button class="wp-block-button__link has-text-color has-link-color wp-element-button" data-modal-close style="border-radius:50%;border-width:0px;padding-top:8px;padding-bottom:8px;padding-left:8px;padding-right:8px">
+                            <!-- wp:svg {"width":"20","height":"20"} -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 18L18 6M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <!-- /wp:svg -->
+                        </button>
+                    </div>
+                    <!-- /wp:button -->
+                </div>
+                <!-- /wp:buttons -->
+                
+                <!-- Modal Title -->
+                <!-- wp:heading {"level":3,"style":{"typography":{"fontSize":"24px"},"spacing":{"margin":{"bottom":"20px"}}}} -->
+                <h3 class="wp-block-heading" style="font-size:24px;margin-bottom:20px">درخواست مشاوره تخصصی</h3>
+                <!-- /wp:heading -->
+                
+                <!-- Contact Form -->
+                <!-- wp:html -->
+                <form id="consultation-form" class="space-y-6">
+                    <div>
+                        <label for="consultation-name" class="block text-sm font-medium text-gray-700 mb-2">نام و نام خانوادگی</label>
+                        <input type="text" id="consultation-name" name="name" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+                    
+                    <div>
+                        <label for="consultation-phone" class="block text-sm font-medium text-gray-700 mb-2">شماره تماس</label>
+                        <input type="tel" id="consultation-phone" name="phone" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all">
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition-all font-medium">
+                        ارسال درخواست مشاوره
+                    </button>
+                </form>
+                <!-- /wp:html -->
+                
+            </div>
+            <!-- /wp:group -->
+            
+        </div>
+        <!-- /wp:group -->
+    </div>
+    <!-- /wp:group -->
+    
+</section>
+<!-- /wp:group -->

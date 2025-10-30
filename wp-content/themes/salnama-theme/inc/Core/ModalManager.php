@@ -2,26 +2,40 @@
 namespace Salnama_Theme\Core;
 
 class ModalManager {
-    public function run() {
-        // اضافه کردن مودال به footer
-        add_action('wp_footer', [$this, 'render_modal_template']);
-        // بارگذاری الگوهای CTA
-        add_action('init', [$this, 'register_cta_patterns']);
+    
+    private static $instance = null;
+    private $modals = [];
+
+    public static function get_instance() {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    public function render_modal_template() {
-        get_template_part('template-parts/modal/cta-modal');
+    public function register_modal($modal_id, $modal_class) {
+        $this->modals[$modal_id] = $modal_class;
     }
 
-    public function register_cta_patterns() {
-        $pattern_dir = SALNAMA_THEME_PATH . '/patterns/cta/';
-        if (!is_dir($pattern_dir)) return;
+    public function get_modal_content($modal_id, $args = []) {
+        if (isset($this->modals[$modal_id])) {
+            $modal_class = $this->modals[$modal_id];
+            if (class_exists($modal_class)) {
+                $modal_instance = new $modal_class($args);
+                return $modal_instance->render();
+            }
+        }
+        return '';
+    }
 
-        foreach (glob($pattern_dir . '*.php') as $file) {
-            register_block_pattern(
-                'salnama/' . basename($file, '.php'),
-                require $file
-            );
+    public function init() {
+        add_action('wp_footer', array($this, 'render_modals'));
+    }
+
+    public function render_modals() {
+        foreach ($this->modals as $modal_id => $modal_class) {
+            echo $this->get_modal_content($modal_id);
         }
     }
+
 }

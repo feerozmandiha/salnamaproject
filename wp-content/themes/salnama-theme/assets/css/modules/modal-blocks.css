@@ -1,0 +1,42 @@
+/* /assets/css/blocks/modal-blocks.css */
+
+/* استایل برای modal-overlay */
+.wp-block-group.is-style-modal-overlay {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 9998 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 2rem !important;
+}
+
+/* استایل برای modal-content */
+.wp-block-group.is-style-modal-content {
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    position: relative !important;
+    z-index: 9999 !important;
+    max-width: 90vw !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .wp-block-group.is-style-modal-overlay {
+        padding: 1rem !important;
+    }
+    
+    .wp-block-group.is-style-modal-content {
+        max-width: 95vw !important;
+        max-height: 95vh !important;
+    }
+}

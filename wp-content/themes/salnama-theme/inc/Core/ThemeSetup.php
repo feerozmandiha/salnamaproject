@@ -14,7 +14,6 @@ class ThemeSetup {
         add_action( 'admin_head', [ $this, 'fix_svg_display' ] );
         add_filter('wp_kses_allowed_html', [ $this, 'data_modal_trigger' ]  , 10, 2 );
 
-
         // غیرفعال کردن Layout Styles داینامیک برای Group Block (جلوگیری از کلاس‌های .wp-container-...)
         add_filter( 'block_core_group_render_layout_support', '__return_false' );
     }
@@ -25,6 +24,8 @@ class ThemeSetup {
     public function theme_support() {
         // فعال‌سازی عنوان داینامیک در تگ <title>
         add_theme_support( 'title-tag' );
+        add_theme_support( 'editor-styles' );
+        add_theme_support( 'editor-font-sizes' );
 
         // فعال‌سازی پشتیبانی از پست‌تامبنیل
         add_theme_support( 'post-thumbnails' );
@@ -90,4 +91,6 @@ class ThemeSetup {
         }
         return $tags;
     }
+
+
 }

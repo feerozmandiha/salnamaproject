@@ -56,11 +56,23 @@
 					"color": "transparent",
 					"name": "Transparent",
 					"slug": "transparent"
+				},
+				{
+					"slug": "modal-background",
+					"color": "#00000080",
+					"name": "Modal Background"
+				},
+				{
+					"slug": "modal-overlay",
+					"color": "rgba(0, 0, 0, 0.5)",
+					"name": "Modal Overlay"
 				}
 			]
 		},
 		"custom": {
-			"transition": "0.3s ease-in-out"
+			"transition": "0.3s ease-in-out",
+			"modal-animation-duration": "0.3s",
+      		"modal-backdrop-blur": "8px"
 		},
 		"layout": {
 			"contentSize": "1200px",
@@ -290,6 +302,19 @@
 			"area": "cta-modal",
 			"name": "cta-modal"
 		}
+	],
+	"patternCategories": [
+		{
+			"name": "salmama-modals",
+			"label": "مودال‌های سالنامه"
+		}
+
+	],
+	"patterns": [
+		"modal-consultation",
+		"modal-special-order", 
+		"call-to-action-consultation",
+		"call-to-action-order"
 	],
 	"version": 3,
 	"$schema": "https://schemas.wp.org/trunk/theme.json"
